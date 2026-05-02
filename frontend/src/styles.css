@@ -1,0 +1,351 @@
+:root {
+  color: #17201f;
+  background: #f4f7f6;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  background: #0f766e;
+  color: white;
+  min-height: 42px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: #115e59;
+}
+
+button.active {
+  background: #134e4a;
+}
+
+input,
+select {
+  border: 1px solid #cad8d5;
+  border-radius: 6px;
+  min-height: 38px;
+  padding: 8px 10px;
+  background: white;
+  color: #17201f;
+}
+
+.appShell {
+  min-height: 100vh;
+}
+
+.topbar {
+  min-height: 86px;
+  padding: 18px clamp(16px, 4vw, 42px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  background: white;
+  border-bottom: 1px solid #dce7e4;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.topbar h1,
+.importPanel h2 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #0f766e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: #5c6d69;
+  line-height: 1.55;
+}
+
+.topActions,
+.toolbar,
+.toolbarGroup,
+.importActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.importView {
+  padding: clamp(18px, 5vw, 56px);
+}
+
+.importPanel {
+  max-width: 880px;
+  min-height: 420px;
+  margin: 0 auto;
+  padding: clamp(22px, 5vw, 44px);
+  border: 1px solid #d5e2df;
+  border-radius: 8px;
+  background: white;
+  display: grid;
+  align-content: center;
+  gap: 28px;
+}
+
+.importPanel h2 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  max-width: 720px;
+}
+
+.importActions button {
+  min-height: 54px;
+  padding-inline: 18px;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.statusLine {
+  border-left: 4px solid #0f766e;
+  background: #edf7f5;
+  padding: 12px 14px;
+  color: #25433e;
+}
+
+.tableView {
+  padding: 16px clamp(10px, 3vw, 32px) 34px;
+}
+
+.toolbar {
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.quotientControl input {
+  width: 150px;
+}
+
+.sheetWrap {
+  overflow: auto;
+  border: 1px solid #d5e2df;
+  background: white;
+  border-radius: 8px;
+  max-height: calc(100vh - 178px);
+}
+
+.sheet {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.sheet th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #e8f1ef;
+  color: #233835;
+  text-align: left;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.sheet th,
+.sheet td {
+  border-bottom: 1px solid #e3ece9;
+  border-right: 1px solid #e3ece9;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.sheet td:first-child,
+.sheet th:first-child {
+  min-width: 230px;
+}
+
+.sheet input {
+  width: 100%;
+  min-width: 78px;
+}
+
+.quotientCell {
+  display: grid;
+  grid-template-columns: minmax(84px, 1fr) minmax(58px, 0.7fr);
+  gap: 6px;
+  align-items: center;
+}
+
+.metric {
+  font-weight: 800;
+  color: #0f766e;
+}
+
+.iconDanger {
+  width: 42px;
+  padding: 0;
+  background: #b42318;
+}
+
+.iconDanger:hover {
+  background: #912018;
+}
+
+.secondaryButton {
+  background: #e8f1ef;
+  color: #173b36;
+}
+
+.secondaryButton:hover {
+  background: #d7e5e2;
+}
+
+.dangerButton {
+  background: #b42318;
+}
+
+.dangerButton:hover {
+  background: #912018;
+}
+
+.rowActions {
+  display: flex;
+  gap: 8px;
+}
+
+.rowActions button {
+  width: 42px;
+  padding: 0;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  padding: 18px;
+  background: rgba(10, 24, 22, 0.45);
+  display: grid;
+  place-items: center;
+}
+
+.modalPanel {
+  width: min(440px, 100%);
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #d5e2df;
+  box-shadow: 0 24px 70px rgba(14, 31, 28, 0.24);
+  padding: clamp(18px, 4vw, 28px);
+  display: grid;
+  gap: 16px;
+}
+
+.modalPanel h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  letter-spacing: 0;
+}
+
+.fieldLabel {
+  font-weight: 800;
+  color: #233835;
+}
+
+.modalPanel select {
+  width: 100%;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .sheet { min-width: 780px; }
+  .sheet td:first-child, .sheet th:first-child { min-width: 180px; }
+  .toolbar { flex-wrap: wrap; }
+  .toolbarGroup { flex: 1; min-width: 200px; }
+}
+@media (max-width: 720px) {
+  .topbar { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 16px; }
+  .topbar h1 { font-size: 1.15rem; }
+  .topActions,.topActions button,.importActions,.importActions button,.toolbarGroup,.toolbarGroup button { width: 100%; }
+  .topActions,.importActions,.toolbarGroup { flex-direction: column; align-items: stretch; }
+  button { min-height: 48px; font-size: 1rem; }
+  .toolbar { align-items: stretch; flex-direction: column; gap: 12px; }
+  .quotientControl { width: 100%; }
+  .quotientControl input { width: 100%; }
+  .sheetWrap { max-height: none; border: none; border-radius: 0; margin: 0 -16px; }
+  .sheet { min-width: 600px; font-size: 0.9rem; }
+  .sheet th,.sheet td { padding: 6px 4px; }
+  .sheet td:first-child,.sheet th:first-child { min-width: 120px; }
+  .sheet input { min-width: 60px; font-size: 0.9rem; padding: 4px; }
+  .quotientCell { grid-template-columns: 1fr; gap: 4px; }
+  .modalBackdrop { align-items: flex-end; padding: 0; background: rgba(10,24,22,0.5); }
+  .modalPanel { width: 100%; border-radius: 12px 12px 0 0; max-height: 90vh; overflow-y: auto; }
+  .tableView { padding: 12px 0 80px; }
+  .rowActions button { width: 36px; height: 36px; }
+  .iconDanger { width: 36px; }
+}
+@media (max-width: 480px) {
+  .importPanel { padding: 20px 16px; }
+  .sheet { min-width: 520px; font-size: 0.85rem; }
+  .topbar h1 { font-size: 1.1rem; }
+}
+@media print {
+  body {
+    background: white;
+  }
+
+  .topbar,
+  .toolbar,
+  .pdfHidden,
+  .printHidden {
+    display: none !important;
+  }
+
+  .tableView {
+    padding: 0;
+  }
+
+  .sheetWrap {
+    border: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .sheet {
+    min-width: 0;
+  }
+
+  .sheet input,
+  .sheet select {
+    border: 0;
+    padding: 0;
+  }
+}

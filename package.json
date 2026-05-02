@@ -1,0 +1,19 @@
+{
+  "name": "mes-moyens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MVP responsive pour importer, corriger, calculer et exporter les moyennes scolaires.",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "install:all": "npm install",
+    "build": "npm run build --workspace frontend",
+    "start": "npm run start --workspace backend"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
