@@ -1,0 +1,12 @@
+{
+  "framework": "nextjs",
+  "env": {
+    "VITE_API_URL": {
+      "description": "API backend URL",
+      "required": true
+    }
+  },
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "root": "frontend"
+}

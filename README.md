@@ -60,7 +60,7 @@ Exemple :
 
 ```env
 GEMINI_API_KEY=ta-cle-api-gemini
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-1.5-flash
 ```
 
 Gemini accepte les images et les PDF dans ce MVP, tant que le fichier reste sous la limite backend actuelle de 10 MB.
@@ -77,7 +77,7 @@ SUPABASE_SERVICE_ROLE_KEY=ta-cle-service-role
 SUPABASE_BUCKET=documents
 SUPABASE_STORAGE_PUBLIC=false
 GEMINI_API_KEY=ta-cle-api-gemini
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-1.5-flash
 OCR_INCLUDE_RAW_TEXT=false
 ```
 
