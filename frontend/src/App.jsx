@@ -7,11 +7,10 @@ import {
   FolderOpen,
   Plus,
   Printer,
-  Trash2,
-  Upload
+  Trash2
 } from "lucide-react";
 import React from "react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { buildCsv, buildExcelHtml, downloadBlob } from "./lib/exporters.js";
 import { calculateClass } from "./lib/grades.js";
 
@@ -29,8 +28,23 @@ export default function App() {
   const [globalQuotient, setGlobalQuotient] = useState("");
   const [deleteNoteModalOpen, setDeleteNoteModalOpen] = useState(false);
   const [noteIndexToDelete, setNoteIndexToDelete] = useState(0);
+  const [addNoteModalOpen, setAddNoteModalOpen] = useState(false);
+  const [globalNoteValue, setGlobalNoteValue] = useState("");
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
+  const exportMenuRef = useRef(null);
+
+  useEffect(() => {
+    if (!exportMenuOpen) return;
+    function handleClick(event) {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(event.target)) {
+        setExportMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [exportMenuOpen]);
 
   const enrichedStudents = useMemo(() => calculateClass(students), [students]);
   const maxNotes = Math.max(1, ...students.map((student) => student.notes.length));
@@ -95,8 +109,25 @@ function addStudent() {
     setStudents((current) => current.filter((student) => student.id !== id));
   }
 
-function addNoteColumn() {
-  setStudents((current) => current.map((student) => ({ ...student, notes: [...student.notes, ""] })));
+function addNoteColumn(value = "") {
+  setStudents((current) => current.map((student) => ({ ...student, notes: [...student.notes, value] })));
+}
+
+function openAddNoteModal() {
+  setGlobalNoteValue("");
+  setAddNoteModalOpen(true);
+}
+
+function applyGlobalNote() {
+  const numeric = Number(String(globalNoteValue).replace(",", "."));
+  if (!Number.isFinite(numeric) || numeric < 0 || numeric > 20) return;
+  addNoteColumn(numeric);
+  setAddNoteModalOpen(false);
+}
+
+function addEmptyColumn() {
+  addNoteColumn("");
+  setAddNoteModalOpen(false);
 }
 
 function addNoteToStudent(id) {
@@ -155,14 +186,6 @@ function addNoteToStudent(id) {
           <p className="eyebrow">Plateforme enseignants</p>
           <h1>MesMoyens</h1>
         </div>
-        <div className="topActions">
-          <button className={activeStep === "import" ? "active" : ""} onClick={() => setActiveStep("import")}>
-            <Upload size={18} /> Import
-          </button>
-          <button className={activeStep === "table" ? "active" : ""} onClick={() => setActiveStep("table")}>
-            <FileSpreadsheet size={18} /> Tableau
-          </button>
-        </div>
       </header>
 
       {activeStep === "import" && (
@@ -203,6 +226,16 @@ function addNoteToStudent(id) {
             />
 
             <div className="statusLine">{status}</div>
+
+            {students.length > 0 && (
+              <button
+                type="button"
+                className="secondaryButton"
+                onClick={() => setActiveStep("table")}
+              >
+                <FileSpreadsheet size={18} /> Voir le tableau
+              </button>
+            )}
           </div>
         </section>
       )}
@@ -213,7 +246,7 @@ function addNoteToStudent(id) {
             <div className="toolbarGroup">
               <button onClick={() => setActiveStep("import")}><ArrowLeft size={18} /> Retour accueil</button>
               <button onClick={addStudent}><Plus size={18} /> Eleve</button>
-              <button onClick={addNoteColumn}><Plus size={18} /> Note globale</button>
+              <button onClick={openAddNoteModal}><Plus size={18} /> Note globale</button>
               <button onClick={removeLastNoteColumn}><Trash2 size={18} /> Supprimer note</button>
             </div>
             <div className="toolbarGroup quotientControl">
@@ -227,10 +260,28 @@ function addNoteToStudent(id) {
               />
               <button onClick={applyGlobalQuotient}>Appliquer</button>
             </div>
-            <div className="toolbarGroup">
-              <button onClick={exportCsv}><FileText size={18} /> CSV</button>
-              <button onClick={exportExcel}><Download size={18} /> Excel</button>
-              <button onClick={exportPdf}><Printer size={18} /> Telecharger PDF</button>
+            <div className="exportWrap" ref={exportMenuRef}>
+              <button
+                type="button"
+                onClick={() => setExportMenuOpen((value) => !value)}
+                aria-haspopup="menu"
+                aria-expanded={exportMenuOpen}
+              >
+                <Download size={18} /> Exporter
+              </button>
+              {exportMenuOpen && (
+                <div className="exportMenu" role="menu">
+                  <button role="menuitem" onClick={() => { exportCsv(); setExportMenuOpen(false); }}>
+                    <FileText size={18} /> CSV
+                  </button>
+                  <button role="menuitem" onClick={() => { exportExcel(); setExportMenuOpen(false); }}>
+                    <Download size={18} /> Excel
+                  </button>
+                  <button role="menuitem" onClick={() => { exportPdf(); setExportMenuOpen(false); }}>
+                    <Printer size={18} /> Telecharger PDF
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -313,6 +364,41 @@ function addNoteToStudent(id) {
               </tbody>
             </table>
           </div>
+
+          {addNoteModalOpen && (
+            <div className="modalBackdrop" role="presentation" onClick={() => setAddNoteModalOpen(false)}>
+              <div
+                className="modalPanel"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="add-note-title"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div>
+                  <p className="eyebrow">Nouvelle colonne</p>
+                  <h2 id="add-note-title">Ajouter une note pour toute la classe</h2>
+                  <p className="muted">La valeur sera appliquee a chaque eleve. Tu pourras la modifier ligne par ligne ensuite.</p>
+                </div>
+
+                <label className="fieldLabel" htmlFor="global-note-input">Note (0 a 20)</label>
+                <input
+                  id="global-note-input"
+                  type="number"
+                  min="0"
+                  max="20"
+                  step="0.25"
+                  value={globalNoteValue}
+                  onChange={(event) => setGlobalNoteValue(event.target.value)}
+                  autoFocus
+                />
+
+                <div className="modalActions">
+                  <button className="secondaryButton" onClick={addEmptyColumn}>Colonne vide</button>
+                  <button onClick={applyGlobalNote}><Plus size={18} /> Appliquer la note</button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {deleteNoteModalOpen && (
             <div className="modalBackdrop" role="presentation" onClick={() => setDeleteNoteModalOpen(false)}>
